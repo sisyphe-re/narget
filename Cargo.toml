@@ -1,0 +1,14 @@
+[package]
+name = "narget"
+version = "0.1.0"
+authors = ["Rémy Grünblatt <remy@grunblatt.org>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+libnar = { git = "https://github.com/sisyphe-re/libnar" }
+reqwest = { version = "0.11.3", features = ["blocking", "json"] }
+xz = "0.1"
+regex = "1"
+lazy_static = "1.4.0"
