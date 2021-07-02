@@ -1,3 +1,4 @@
+use clap::{AppSettings, Arg, Clap};
 use lazy_static::lazy_static;
 use libnar::{
     de::{Entries, EntryKind},
@@ -132,11 +133,21 @@ fn download(path_or_hash: &str) -> Result<(), MyError> {
         _ => Err(MyError::E1()),
     }
 }
+#[derive(Clap)]
+#[clap(version = "0.1", author = "Rémy Grünblatt <remy@grunblatt.org>")]
+#[clap(setting = AppSettings::ColoredHelp)]
+struct Opts {
+    #[clap(short, long, default_value = "https://cache.nixos.org/")]
+    caches: Vec<String>,
+    #[clap(short, long, default_value = "wkhdf9jinag5750mqlax6z2zbwhqb76n-hello-2.10")]
+    hash: String,
+}
 
 fn main() -> Result<(), MyError> {
-    let hash = env::args()
-        .nth(1)
-        .expect("Expected path name or hash of a nar archive");
-    download(&hash)?;
+    let opts: Opts = Opts::parse();
+
+    // Gets a value for config if supplied by user, or defaults to "default.conf"
+    println!("Searching {} in caches {:?} ", opts.hash, opts.caches);
+    download(&opts.hash)?;
     Ok(())
 }
